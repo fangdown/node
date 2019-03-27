@@ -22,5 +22,7 @@ const userSchema = mongoose.Schema({
   create_time: {type: Date, default: +Date.now()}
 });
 //根据schema生成model
-const User = mongoose.model('User', userSchema)
-module.exports = User;
+const model = {
+  User: mongoose.model('User', userSchema)
+};
+module.exports = model;
