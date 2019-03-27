@@ -1,6 +1,6 @@
 var express = require("express");
-var Blog = require("../models/blog");
-
+// var Blog = require("../models/blog");
+import blog = require("../models/blog");
 var router = express.Router();
 
 

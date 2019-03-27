@@ -1,9 +1,26 @@
 var mongoose = require('mongoose'); //引入mongoose依赖
-var Schema = mongoose.Schema;//mongoose的一切都是以Schema开始的
 
-// 使用modules.exports导出User模块
-module.exports = mongoose.model('User',new Schema({//利用模板的方式启动模板，并导出
-    name:String,
-    password:String,
-    admin:Boolean
-}))
+mongoose.connect('mongodb://localhost/vue-login');
+ 
+let db = mongoose.connection;
+// 防止Mongoose: mpromise 错误
+mongoose.Promise = global.Promise;
+ 
+db.on('error', function(){
+  console.log('数据库连接出错！');
+});
+db.on('open', function(){
+  console.log('数据库连接成功！');
+});
+
+
+//声明schema
+const userSchema = mongoose.Schema({
+  username: String,
+  password: String,
+  token: String,
+  create_time: {type: Date, default: +Date.now()}
+});
+//根据schema生成model
+const User = mongoose.model('User', userSchema)
+module.exports = User;

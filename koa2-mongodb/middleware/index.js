@@ -9,36 +9,28 @@ const miHttpError = require('./mi-http-error')
 const miLog = require('./mi-log')
 // const miLog = require('./mi-log/logger')
 module.exports = app => {
-  app.use(miHttpError({
-    errorPageFolder: path.resolve(__dirname, '../errorPage')
-  }))
-  app.use(miLog({
-    env: app.env,  // koa 提供的环境变量
-    projectName: 'koa2-fangdown',
-    appLogLevel: 'debug',
-    dir: 'logs',
-    serverIp: ip.address()
-  }))
-  app.use(staticFile(path.resolve(__dirname, '../public')))
-  app.use(nunjucks({
-    ext: 'html',
-    path: path.join(__dirname, '../views'),
-    nunjucksConfig: {
-      trimBlocks: true
-    }
-  }))
+  // app.use(miHttpError({
+  //   errorPageFolder: path.resolve(__dirname, '../errorPage')
+  // }))
+  // app.use(miLog({
+  //   env: app.env,  // koa 提供的环境变量
+  //   projectName: 'koa2-fangdown',
+  //   appLogLevel: 'debug',
+  //   dir: 'logs',
+  //   serverIp: ip.address()
+  // }))
   app.use(bodyParser())
   app.use(miSend())
   // 增加错误的监听处理
-  app.on("error", (err, ctx) => {
-    console.log('ctx.status', ctx.status)
-    if (ctx && !ctx.headerSent && ctx.status < 500) {
-      ctx.status = 500
-    }
-    if (ctx && ctx.log && ctx.log.error) {
-      if (!ctx.state.logged) {
-        ctx.log.error(err.stack)
-      }
-    }
-  })
+  // app.on("error", (err, ctx) => {
+  //   console.log('ctx.status', ctx.status)
+  //   if (ctx && !ctx.headerSent && ctx.status < 500) {
+  //     ctx.status = 500
+  //   }
+  //   if (ctx && ctx.log && ctx.log.error) {
+  //     if (!ctx.state.logged) {
+  //       ctx.log.error(err.stack)
+  //     }
+  //   }
+  // })
 }
