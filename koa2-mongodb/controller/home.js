@@ -1,9 +1,5 @@
-const HomeService = require('../service/home')
-const User = require('../models/db').User
-//用于密码加密
-const sha1 = require('sha1')
-//createToken
-const { createToken } = require('../token/token')
+const { findAllUsers, findUser, addUser, findOneAndDelete, findUserList } = require('../service/home')
+
 const home = async (ctx) => {
   ctx.response.status = 200;
   ctx.body = {
@@ -12,22 +8,7 @@ const home = async (ctx) => {
     data: null
   }
 }
-const findUser = (username) => {
-  return new Promise((resolve, reject) => {
-    User.findOne({ username }, (err, res) => {
-      if (err) reject(err)
-      resolve(res)
-    })
-  })
-}
-const findAllUsers = async () => {
-  return  new Promise((resolve, reject) => {
-    User.find({ }, (err, res) => {
-      if (err) reject(err)
-      resolve(res)
-    })
-  })
-}
+
 const allUser = async (ctx) => {
   let res = await findAllUsers();
   ctx.status = 200;
@@ -37,13 +18,23 @@ const allUser = async (ctx) => {
     data: res
   };
 }
+const getUserList = async (ctx) => {
+  const username = ctx.request.body.username
+  const page = ctx.request.body.page
+  const size = ctx.request.body.size
+  const res = await findUserList(username, page, size)
+  ctx.status = 200;
+  ctx.body = {
+    code: 0,
+    msg: '查询成功',
+    data: res
+  }
+}
+// 注册
 const register = async (ctx) => {
-  let user = new User({
-    username: ctx.request.body.name,
-    password: sha1(ctx.request.body.password),
-    token: createToken(this.username)
-  })
-  let res = await findUser(user.username)
+  const username = ctx.request.body.name
+  const password = ctx.request.body.password
+  let res = await findUser(username)
   if (res) {
     ctx.status = 200
     ctx.body = {
@@ -52,24 +43,44 @@ const register = async (ctx) => {
       data: null
     }
   } else {
-    await new Promise((resolve, reject) => {
-      user.save(err => {
-        if (err) reject(err)
-        resolve()
-      })
-    })
+    let res = await addUser(username, password)
+    if (res) {
+      ctx.status = 200
+      ctx.body = {
+        code: 0,
+        msg: '创建成功',
+        data: null
+      }
+    }
+  }
+}
+const delUser = async (ctx) => {
+  const id = ctx.request.body.id
+  try {
+    let res = await findOneAndDelete(id)
+    console.log('res', res)
+    if (res) {
+      ctx.status = 200
+      ctx.body = {
+        code: 0,
+        msg: '删除成功',
+        data: null
+      }
+    }
+  } catch (e) {
     ctx.status = 200
     ctx.body = {
-      code: 0,
-      msg: '创建成功',
+      code: -1,
+      msg: '删除失败',
       data: null
     }
   }
 }
-
 module.exports = {
   home,
   register,
   findUser,
-  allUser
+  allUser,
+  delUser,
+  getUserList
 }

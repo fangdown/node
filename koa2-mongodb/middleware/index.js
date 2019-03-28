@@ -1,8 +1,4 @@
-const path = require('path')
 const bodyParser = require('koa-bodyparser')
-const nunjucks = require('koa-nunjucks-2') // 模板引擎
-const staticFile = require('koa-static') // 静态文件
-const ip = require('ip')
 const miSend = require('./mi-send')
 const miHttpError = require('./mi-http-error')
 // 引入日志中间件
