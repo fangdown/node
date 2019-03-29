@@ -2,8 +2,8 @@ const moment = require('moment')
 
 var mongoose = require('mongoose'); //引入mongoose依赖
 // 线上数据库
-// const address = '148.70.216.46'
-const address = 'localhost'
+const address = '148.70.216.46'
+// const address = 'localhost'
 mongoose.connect(`mongodb://${address}/xiaochengxu`);
 
 let db = mongoose.connection;

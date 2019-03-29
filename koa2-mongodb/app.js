@@ -4,6 +4,8 @@ const app = new Koa()
 const router = require('./router')
 app.use(bodyParser())
 router(app)
-app.listen(3000, () => {
-  console.log('app  run at port 3000')
+const HOST = process.env.HOST || '0.0.0.0'
+const PORT = process.env.PORT || '8888'
+app.listen(PORT, () => {
+  console.log(`app run at ${HOST}:${PORT}`)
 })
