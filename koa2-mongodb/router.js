@@ -7,7 +7,7 @@ module.exports = (app) => {
   router.get('/allUser', allUser)
   router.post('/delUser', delUser)
   router.post('/getUserList', getUserList)
-  router.post('/weather/add', addWeather)
+  router.get('/weather/add', addWeather)
   router.get('/weather/get', getWeather)
   router.get('/weather/all', getAllWeather)
   router.post('/weather/delete', deleteWeather)

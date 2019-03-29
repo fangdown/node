@@ -4,11 +4,11 @@ const Weather = require('../models/db').Weather
 const { trim } = require('../utils/index')
 
 // 添加天气
-const addWeatherApi = async () => {
+const addWeatherApi = async (createTime) => {
   let data = await getWeather7d()
   let params = {
     data,
-    createTime: '2019-03-28'
+    createTime: createTime
   }
   let weather = new Weather(params)
   return new Promise((resolve, reject) => {
@@ -57,10 +57,9 @@ const getAllWeatherApi = () => {
   })
 }
 // 删除
-const deleteWeatherApi = async (createTime) => {
-  console.log('createTime', createTime)
+const deleteWeatherApi = async (createTime, id) => {
   return new Promise((resolve, reject) => {
-    Weather.findOneAndDelete({ _id: '5c9d9cb16ff74f3cf4ce3adb' }, (err) => {
+    Weather.deleteMany({ createTime: createTime }, (err) => {
       if (err) reject(err)
       resolve('success')
     })

@@ -2,7 +2,8 @@ const moment = require('moment')
 const { addWeatherApi, getWeatherApi, getAllWeatherApi, deleteWeatherApi } = require('../service/weather')
 
 const addWeather = async (ctx) => {
-  let res = await addWeatherApi();
+  const createTime = moment().format('YYYY-MM-DD')
+  let res = await addWeatherApi(createTime);
   ctx.status = 200;
   ctx.body = {
     code: 0,
@@ -30,7 +31,9 @@ const getAllWeather = async (ctx) => {
   };
 }
 const deleteWeather = async (ctx) => {
-  let res = await deleteWeatherApi('2019-03-29');
+  const createTime = ctx.request.body.createTime
+  const id = ctx.request.body.id
+  let res = await deleteWeatherApi(createTime, id);
   ctx.status = 200;
   ctx.body = {
     code: 0,
